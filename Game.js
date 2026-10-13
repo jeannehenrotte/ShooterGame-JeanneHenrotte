@@ -17,6 +17,7 @@ class Game {
         this.opponentShots = []; // Shots fired by the opponent
         this.xDown = null; // Position where the user touched the screen
         this.paused = false; // Indicates whether the game is paused
+        this.score = 0;
     }
 
 
@@ -92,7 +93,11 @@ class Game {
         if (this.opponent) {
             document.body.removeChild(this.opponent.image);
         }
-        this.opponent = new Opponent(this);
+         if (this.opponent instanceof Opponent && !(this.opponent instanceof Boss)) {
+            this.opponent = new Boss(this);
+        } else {
+            this.opponent = new Opponent(this);
+        }
     }
 
     /**
@@ -217,10 +222,11 @@ class Game {
      */
     endGame () {
         this.ended = true;
-        let gameOver = new Entity(this, this.width / 2, "auto", this.width / 4, this.height / 4, 0, GAME_OVER_PICTURE)
+        let picture = (this.player && this.player.lives > 0 && this.opponent instanceof Boss && this.opponent.dead) ? YOU_WIN_PICTURE : GAME_OVER_PICTURE;
+        let gameOver = new Entity(this, this.width / 2, "auto", this.width / 4, this.height / 4, 0, picture)
         gameOver.render();
     }
-
+    
     /**
      * Reset the game
      */
@@ -263,5 +269,9 @@ class Game {
         this.opponentShots.forEach((shot) => {
             shot.render();
         });
+        document.getElementById("scoreli").innerHTML = `Score: ${this.score}`;
+        if (this.player) {
+            document.getElementById("livesli").innerHTML = `Lives: ${this.player.lives}`;
+        }
     }
 }

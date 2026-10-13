@@ -18,7 +18,6 @@ class Opponent extends Character {
         this.direction = "R"; // Direction in which the opponent is moving
         setTimeout(() => this.shoot(), 1000 + getRandomNumber(2500));
     }
-
     /**
      * Create a new shot
      */
@@ -30,7 +29,6 @@ class Opponent extends Character {
             setTimeout(() => this.shoot(), 1000 + getRandomNumber(2500));
         }
     }
-
     /**
      * Update the opponent's position attributes
      */
@@ -58,13 +56,13 @@ class Opponent extends Character {
             }
         }
     }
-
     /**
      * Kill the opponent
      */
     collide() {
         
         if (!this.dead) {
+            this.game.score++;
             setTimeout(() => {
                 this.game.removeOpponent();
             }, 2000);

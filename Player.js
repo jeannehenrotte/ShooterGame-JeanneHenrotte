@@ -18,8 +18,8 @@ class Player extends Character {
             myImageDead = PLAYER_PICTURE_DEAD;
 
         super(game, width, height, x, y, speed, myImage, myImageDead);
+        this.lives = PLAYER_LIVES;
     }
-
     /**
      * Update the position attributes of the player and the shots based on the keys pressed
      */
@@ -48,10 +48,19 @@ class Player extends Character {
      */
     collide() {
         if (!this.dead) {
-            setTimeout(() => {
-                this.game.endGame();
-            }, 2000);
-            super.collide();
+            this.lives--;
+            if (this.lives > 0) {
+                super.collide();
+                setTimeout(() => {
+                    this.image.src = this.myImage;
+                    this.dead = false;
+                }, 2000);
+            } else {
+                super.collide();
+                setTimeout(() => {
+                    this.game.endGame();
+                }, 2000);
+            }
         }
     }
 }
